@@ -1,0 +1,40 @@
+object ChatViewer: TChatViewer
+  Left = 0
+  Top = 0
+  Caption = 'Memories'
+  ClientHeight = 480
+  ClientWidth = 640
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnMouseWheel = ChatViewMouseWheel
+  DesignerMasterStyle = 0
+  object ChatView: TPaintBox
+    Align = Client
+    Margins.Left = 10.000000000000000000
+    Margins.Right = 10.000000000000000000
+    Size.Width = 602.000000000000000000
+    Size.Height = 480.000000000000000000
+    Size.PlatformDefault = False
+    OnPaint = ChatViewPaint
+    OnResized = ChatViewResized
+  end
+  object ChatScroll: TScrollBar
+    Align = Right
+    SmallChange = 0.000000000000000000
+    Orientation = Vertical
+    Position.X = 622.000000000000000000
+    Size.Width = 18.000000000000000000
+    Size.Height = 480.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    OnChange = ChatScrollChange
+  end
+  object ResizeTimer: TTimer
+    Enabled = False
+    Interval = 300
+    OnTimer = ResizeTimerTimer
+    Left = 304
+    Top = 224
+  end
+end
