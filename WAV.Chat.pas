@@ -125,9 +125,19 @@ var
   LContent, LUser, LDate, LTime, LImage: string;
   LElement: TChatElement;
   LText: TTextChatElement;
+  LDateFormat: TFormatSettings;
+  LRealDate: TDateTime;
 begin
   if SplitLine(ALine, LContent, LUser, LDate, LTime) then
   begin
+    //try to convert Date
+    LDateFormat := TFormatSettings.Create();
+    LDateFormat.ShortDateFormat := 'd.m.y';
+    if TryStrToDate(LDate, LRealDate, LDateFormat) then
+    begin
+      LDateFormat.ShortDateFormat := 'd. mmmm yyyy';
+      LDate := DateToStr(LRealDate, LDateFormat);
+    end;
     if TryParseImage(LContent, LImage) then
     begin
       LElement := TImageChatElement.Create();
