@@ -25,6 +25,7 @@ type
     FMainUser: string;
     FMainUserColor: TAlphaColor;
     FOthersColor: TAlphaColor;
+    FDateColor: TAlphaColor;
     procedure BuildPainter;
     procedure UpdatePainter;
   public
@@ -47,10 +48,23 @@ procedure TChatViewer.BuildPainter;
 var
   LElement: TChatElement;
   LPainter: TElementPainter;
+  LLastDate: string;
 begin
+  LLastDate := '';
   for LElement in FChat.Items do
   begin
     LPainter := nil;
+    if LLastDate <> LElement.Date then
+    begin
+      LLastDate := LElement.Date;
+      LPainter := TDateElementPainter.Create();
+      LPainter.Element := LElement;
+      LPainter.Align := eaCenter;
+      LPainter.ShowTime := False;
+      LPainter.Background := FDateColor;
+      FPainter.Add(LPainter);
+      LPainter := nil;
+    end;
     if LElement is TTextChatElement then
       LPainter := TTextElementPainter.Create()
     else if LElement is TImageChatElement then
@@ -115,6 +129,7 @@ begin
   FMainUser := FChat.Users.First;
   FMainUserColor := $FFe2ffc7;
   FOthersColor := TAlphaColorRec.White;
+  FDateColor := $FFd4eaf5;
   BuildPainter();
   ChatView.Canvas.Fill.Color := TAlphaColorRec.Black;
 end;
@@ -129,7 +144,7 @@ procedure TChatViewer.ResizeTimerTimer(Sender: TObject);
 begin
   ResizeTimer.Enabled := False;
   UpdatePainter();
-  ChatView.Repaint();
+  Invalidate();
 end;
 
 procedure TChatViewer.UpdatePainter;
