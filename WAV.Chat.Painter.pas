@@ -171,10 +171,18 @@ end;
 
 procedure TImageElementPainter.MeasureContent(const ACanvas: TCanvas;
   var AWidth, AHeight: Single);
+var
+  LFactor: Single;
+  LSize: Single;
 begin
   inherited;
-  AWidth := Min(Min(GetBitmap.Width, CImagePreviewSize), AWidth);
-  AHeight := Min(Min(GetBitmap.Height, CImagePreviewSize), AHeight);
+  if GetBitmap.Width > GetBitmap.Height then
+    LSize := GetBitmap.Width
+  else
+    LSize := GetBitmap.Height;
+  LFactor := CImagePreviewSize / LSize;
+  AWidth := Min(GetBitmap.Width * LFactor, AWidth);
+  AHeight := Min(GetBitmap.Height * LFactor, AHeight);
 end;
 
 procedure TImageElementPainter.PaintContent(const ACanvas: TCanvas;
